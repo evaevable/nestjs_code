@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, HttpStatus, HttpException, UseFilters, ForbiddenException } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, HttpException, UseFilters, ForbiddenException, UsePipes } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { HttpExceptionFilter } from '../common/exception/http-exception.filter';
+import { createCatSchema, ZodValidationPipe } from '../common/pipe/zod-validation-pipe';
+import { ValidationPipe } from '../common/pipe/validation.pipe';
 
 @Controller('cats')
 export class CatsController {
@@ -10,7 +12,8 @@ export class CatsController {
 
   @Post()
   @UseFilters(new HttpExceptionFilter())
-  async create(@Body() createCatDto: CreateCatDto) {
+  // @UsePipes(new ZodValidationPipe(createCatSchema))
+  async create(@Body(new ValidationPipe()) createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
     let a = 5;
     if(a === 5){
