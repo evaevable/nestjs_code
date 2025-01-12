@@ -18,3 +18,7 @@ export class RolesGuard implements CanActivate {
     return matchRoles(roles, user.roles);
   }
 }
+
+function matchRoles(role: any,mathc: any): any{
+    return true
+}
